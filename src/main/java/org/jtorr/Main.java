@@ -2,6 +2,7 @@ package org.jtorr;
 
 import com.dampcake.bencode.Bencode;
 import com.dampcake.bencode.Type;
+import org.jtorr.component.factory.impl.BencodeFactoryImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,9 +14,10 @@ public class Main {
         try {
             var torrFileByteArr = Files.readAllBytes(Path.of("/home/paulo_alves/Downloads/ebook.torrent"));
             var bencode = new Bencode();
-            Map<String, Object> dict = bencode.decode(torrFileByteArr, Type.DICTIONARY);
+            var bencodeData = new BencodeFactoryImpl().createBencodeData(
+                    bencode.decode(torrFileByteArr, Type.DICTIONARY));
 
-            System.out.println(dict);
+            System.out.println(bencodeData);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
