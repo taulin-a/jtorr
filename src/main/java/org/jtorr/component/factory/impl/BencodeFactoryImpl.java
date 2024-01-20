@@ -28,15 +28,28 @@ public class BencodeFactoryImpl implements BencodeFactory {
     @Override
     public BencodeData createBencodeData(Map<String, Object> bencodeDict) {
         try {
+            List<String> announceList = getAnnounceListFromNestList(
+                    (List<List<String>>) bencodeDict.get(Fields.ANNOUNCE_LIST));
+
             return new BencodeData(
                     (String) bencodeDict.get(Fields.ANNOUNCE),
-                    (List<String>) bencodeDict.get(Fields.ANNOUNCE_LIST),
+                    announceList,
                     (String) bencodeDict.get(Fields.CREATED_BY),
                     (Long) bencodeDict.get(Fields.CREATION_DATE),
                     createInfo((Map<String, Object>) bencodeDict.get(Fields.INFO))
             );
         } catch (ClassCastException | NullPointerException e) {
             throw new BencodeFactoryException("Error creating BencodeData object: " + e.getMessage(), e);
+        }
+    }
+
+    private List<String> getAnnounceListFromNestList(List<List<String>> announceListOfLists) {
+        if (Objects.nonNull(announceListOfLists) && !announceListOfLists.isEmpty()) {
+            return announceListOfLists.stream()
+                    .map(l -> l.get(0))
+                    .toList();
+        } else {
+            return null;
         }
     }
 
@@ -68,7 +81,12 @@ public class BencodeFactoryImpl implements BencodeFactory {
     @Override
     public BencodeFile createFile(Map<String, Object> fileDict) {
         try {
-            return new BencodeFile((Long) fileDict.get(Fields.LENGTH), (List<String>) fileDict.get(Fields.PATH));
+            List<String> pathList = (List<String>) fileDict.get(Fields.PATH);
+            var path = Objects.nonNull(pathList) && !pathList.isEmpty()
+                    ? pathList.get(0)
+                    : null;
+
+            return new BencodeFile((Long) fileDict.get(Fields.LENGTH), path);
         } catch (ClassCastException | NullPointerException e) {
             throw new BencodeFactoryException("Error creating BencodeFile object: " + e.getMessage(), e);
         }
