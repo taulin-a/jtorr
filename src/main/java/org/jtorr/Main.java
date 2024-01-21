@@ -2,6 +2,7 @@ package org.jtorr;
 
 import com.dampcake.bencode.Bencode;
 import com.dampcake.bencode.Type;
+import org.jtorr.component.InfoHashGenerator;
 import org.jtorr.component.factory.impl.BencodeFactoryImpl;
 
 import java.io.IOException;
@@ -17,6 +18,10 @@ public class Main {
                     bencode.decode(torrFileByteArr, Type.DICTIONARY));
 
             System.out.println(bencodeData);
+
+            var infoHashGen = new InfoHashGenerator();
+
+            System.out.println(infoHashGen.generate(bencodeData.info()));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
