@@ -4,7 +4,7 @@ import org.jtorr.exception.InfoHashGeneratorException;
 import org.jtorr.model.bencode.BencodeFile;
 import org.jtorr.model.bencode.BencodeInfo;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
@@ -24,7 +24,6 @@ public class InfoHashGenerator {
         public static final String END = "ee";
     }
 
-    private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String HASH_ALGORITHM = "SHA-1";
 
     private final MessageDigest hashMsgDigest;
@@ -38,7 +37,7 @@ public class InfoHashGenerator {
     }
 
     public String generate(BencodeInfo info) {
-        var infoBencodeBytes = infoToBencodeStr(info).getBytes(Charset.forName(DEFAULT_CHARSET));
+        var infoBencodeBytes = infoToBencodeStr(info).getBytes(StandardCharsets.UTF_8);
 
         return bencodeBytesToHash(infoBencodeBytes);
     }
