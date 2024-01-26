@@ -2,7 +2,7 @@ package org.jtorr;
 
 import com.dampcake.bencode.Bencode;
 import com.dampcake.bencode.Type;
-import org.jtorr.component.InfoHashGenerator;
+import org.jtorr.component.generator.InfoHashGenerator;
 import org.jtorr.component.factory.impl.BencodeFactoryImpl;
 
 import java.io.IOException;

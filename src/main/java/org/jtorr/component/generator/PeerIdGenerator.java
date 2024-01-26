@@ -1,4 +1,4 @@
-package org.jtorr.component;
+package org.jtorr.component.generator;
 
 import org.jtorr.exception.PeerIdGeneratorException;
 
