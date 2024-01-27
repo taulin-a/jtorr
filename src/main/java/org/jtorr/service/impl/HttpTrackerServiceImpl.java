@@ -48,11 +48,16 @@ public class HttpTrackerServiceImpl implements TrackerService {
 
     private URI buildTrackerUri(BencodeData bencodeData, String peerId, String infoHash) {
         try {
+            var httpAnnounce = bencodeData.announceList()
+                    .stream().filter(a -> a.startsWith("http"))
+                    .findFirst()
+                    .get();
+
             var trackerUrl = TrackerURL.builder()
-                    .announce(bencodeData.announce())
+                    .announce("http://nyaa.tracker.wf:7777/announce")
                     .infoHash(infoHash)
                     .peerId(peerId)
-                    .port("")
+                    .port("80")
                     .left(Long.toString(bencodeData.info().pieceLength()))
                     .build();
 

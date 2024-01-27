@@ -2,6 +2,7 @@ package org.jtorr.model.tracker;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.jtorr.util.HexEncodeUtils;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +41,7 @@ public class TrackerURL {
         var strBuilder = new StringBuilder(announce);
         strBuilder.append(UrlParts.QUERY_PARAMS_START);
 
-        addParam(strBuilder, UrlParts.INFO_HASH_PARAM, encodeValue(infoHash));
+        addParam(strBuilder, UrlParts.INFO_HASH_PARAM, HexEncodeUtils.encodeHexStr(infoHash));
         addParam(strBuilder, UrlParts.PEER_ID_PARAM, encodeValue(peerId));
         addParam(strBuilder, UrlParts.PORT_PARAM, encodeValue(port));
         addParam(strBuilder, UrlParts.UPLOADED, encodeValue(uploaded));

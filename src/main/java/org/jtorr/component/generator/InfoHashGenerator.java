@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 
-public class InfoHashGenerator {
+public class InfoHashGenerator extends HexGenerator {
     private static final class BencodeParts {
         public static final String INFO = "4:info";
         public static final String FILES = "d5:filesld";
@@ -82,13 +82,6 @@ public class InfoHashGenerator {
         hashMsgDigest.reset();
         hashMsgDigest.update(infoBencodeBytes);
 
-        byte[] hash = hashMsgDigest.digest();
-
-        var hexStrBuilder = new StringBuilder();
-        for (byte b : hash) {
-            hexStrBuilder.append(String.format("%02x", b));
-        }
-
-        return hexStrBuilder.toString();
+        return bytesToHexStr(hashMsgDigest.digest());
     }
 }

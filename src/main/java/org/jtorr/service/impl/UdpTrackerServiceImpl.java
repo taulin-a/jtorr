@@ -18,13 +18,15 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 public class UdpTrackerServiceImpl implements TrackerService {
+    private static final int DEFAULT_PORT = 6969;
+
     private final DatagramSocket datagramSocket;
     private final TransactionIdGenerator transactionIdGenerator;
     private final Bencode bencode;
 
     public UdpTrackerServiceImpl() {
         try {
-            datagramSocket = new DatagramSocket();
+            datagramSocket = new DatagramSocket(DEFAULT_PORT);
             transactionIdGenerator = new TransactionIdGenerator();
             bencode = new Bencode();
         } catch (SocketException e) {
