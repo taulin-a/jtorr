@@ -2,6 +2,8 @@ package org.jtorr.service.impl;
 
 import com.dampcake.bencode.Bencode;
 import com.dampcake.bencode.Type;
+import org.jtorr.component.factory.TrackerResponseFactory;
+import org.jtorr.component.factory.impl.TrackerResponseFactoryImpl;
 import org.jtorr.exception.TrackerServiceException;
 import org.jtorr.model.bencode.BencodeData;
 import org.jtorr.model.bencode.TrackerResponse;
@@ -19,14 +21,17 @@ import java.net.http.HttpResponse;
 public class HttpTrackerServiceImpl implements TrackerService {
     private final HttpClient httpClient;
     private final Bencode bencode;
+    private final TrackerResponseFactory trackerResponseFactory;
 
     public HttpTrackerServiceImpl() {
         httpClient = HttpClient.newBuilder()
                 .proxy(ProxySelector.getDefault())
                 .build();
         bencode = new Bencode();
+        trackerResponseFactory = new TrackerResponseFactoryImpl();
     }
 
+    // TODO: Refactor this method to receive the desired announce from announceList
     @Override
     public TrackerResponse getPeersInfoFromTracker(BencodeData bencodeData, String peerId, String infoHash) {
         try {
@@ -38,7 +43,7 @@ public class HttpTrackerServiceImpl implements TrackerService {
             var bytes = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofByteArray()).body();
             var bencodeDict = bencode.decode(bytes, Type.DICTIONARY);
 
-            return null;
+            return trackerResponseFactory.createTrackerResponse(bencodeDict);
         } catch (IOException e) {
             throw new TrackerServiceException("Error getting response from tracker: " + e.getMessage(), e);
         } catch (InterruptedException e) {
@@ -48,13 +53,9 @@ public class HttpTrackerServiceImpl implements TrackerService {
 
     private URI buildTrackerUri(BencodeData bencodeData, String peerId, String infoHash) {
         try {
-            var httpAnnounce = bencodeData.announceList()
-                    .stream().filter(a -> a.startsWith("http"))
-                    .findFirst()
-                    .get();
-
+            // TODO: create a method to extract port from announce URI
             var trackerUrl = TrackerURL.builder()
-                    .announce("http://nyaa.tracker.wf:7777/announce")
+                    .announce(bencodeData.announce())
                     .infoHash(infoHash)
                     .peerId(peerId)
                     .port("80")

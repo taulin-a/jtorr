@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class InfoHashGenerator extends HexGenerator {
     private static final class BencodeParts {
-        public static final String INFO = "4:info";
         public static final String FILES = "d5:filesld";
         public static final String LENGTH = "6:lengthi";
         public static final String PATH = "e4:pathl";
@@ -45,9 +44,7 @@ public class InfoHashGenerator extends HexGenerator {
     private String infoToBencodeStr(BencodeInfo info) {
         var strBuilder = new StringBuilder();
 
-        strBuilder.append(BencodeParts.INFO);
         strBuilder.append(BencodeParts.FILES);
-
         String filesDefinitionStr = info.files().stream()
                 .map(this::fileToDefinitionStr)
                 .collect(Collectors.joining(BencodeParts.FILES_SEPARATOR));

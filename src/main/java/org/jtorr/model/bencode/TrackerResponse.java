@@ -2,5 +2,5 @@ package org.jtorr.model.bencode;
 
 import java.util.List;
 
-public record TrackerResponse(Long interval, List<String> peers) {
+public record TrackerResponse(Long interval, List<Peer> peers) {
 }

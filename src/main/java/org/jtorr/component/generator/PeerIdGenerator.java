@@ -1,19 +1,11 @@
 package org.jtorr.component.generator;
 
-import org.jtorr.exception.PeerIdGeneratorException;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.time.LocalDateTime;
 
 public class PeerIdGenerator extends HexGenerator {
-    private static final int PEER_ID_SIZE = 20;
+    private static final String ID_PREFIX = "-JTORR2024-";
 
-    public String generate(String pieces) {
-        var bytes = pieces.getBytes();
-        if (bytes.length < PEER_ID_SIZE) {
-            throw new PeerIdGeneratorException("Invalid pieces field in Bencode");
-        }
-
-        return new String(Arrays.copyOfRange(bytes, 0, PEER_ID_SIZE), StandardCharsets.UTF_8);
+    public String generate() {
+        return ID_PREFIX.concat(Long.toString(LocalDateTime.now().getNano()));
     }
 }

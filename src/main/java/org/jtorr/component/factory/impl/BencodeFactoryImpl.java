@@ -25,6 +25,7 @@ public class BencodeFactoryImpl implements BencodeFactory {
         public static final String PATH = "path";
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public BencodeData createBencodeData(Map<String, Object> bencodeDict) {
         try {
@@ -53,6 +54,7 @@ public class BencodeFactoryImpl implements BencodeFactory {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public BencodeInfo createInfo(Map<String, Object> infoDict) {
         try {
@@ -78,6 +80,7 @@ public class BencodeFactoryImpl implements BencodeFactory {
                 .toList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public BencodeFile createFile(Map<String, Object> fileDict) {
         try {

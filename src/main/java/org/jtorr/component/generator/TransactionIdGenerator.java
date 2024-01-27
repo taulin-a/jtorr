@@ -5,6 +5,7 @@ import java.util.Random;
 public class TransactionIdGenerator {
     private static final int DEFAULT_ORIGIN = 0;
     private static final int DEFAULT_BOUND = 255;
+
     private final Random random;
 
     public TransactionIdGenerator() {

@@ -15,14 +15,14 @@ import java.nio.file.Path;
 public class Main {
     public static void main(String[] args) {
         try {
-            var torrFileByteArr = Files.readAllBytes(Path.of("/home/paulo_alves/Downloads/movie.torrent"));
+            var torrFileByteArr = Files.readAllBytes(Path.of("/home/paulo_alves/Downloads/ebook.torrent"));
             var bencode = new Bencode();
             var bencodeData = new BencodeFactoryImpl().createBencodeData(
                     bencode.decode(torrFileByteArr, Type.DICTIONARY));
 
             var infoHash = new InfoHashGenerator().generate(bencodeData.info());
 
-            var peerId = new PeerIdGenerator().generate(bencodeData.info().pieces());
+            var peerId = new PeerIdGenerator().generate();
 
             var trackerService = new HttpTrackerServiceImpl();
             trackerService.getPeersInfoFromTracker(bencodeData, peerId, infoHash);
