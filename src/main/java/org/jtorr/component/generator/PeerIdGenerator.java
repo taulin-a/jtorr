@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 public class PeerIdGenerator {
-    private static final String HASH_ALGORITHM = "SHA-3";
+    private static final String HASH_ALGORITHM = "SHA-256";
     private static final int PEER_ID_SIZE = 20;
 
     private final MessageDigest hashMsgDigest;
